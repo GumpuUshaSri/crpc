@@ -16,11 +16,11 @@ from email.header import decode_header
 load_dotenv()
 EMAIL_ADDRESS = os.getenv("EMAIL_ADDRESS")
 EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
-MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017")
+MONGO_URI = os.getenv("MONGO_URI")  # MongoDB Atlas URI
 
 # MongoDB setup
 client = MongoClient(MONGO_URI)
-db = client["social_monitoring"]
+db = client["crpcdb"]  # Use your actual DB name here
 flagged_collection = db["flagged_messages"]
 crpc_collection = db["crpc_requests"]
 
@@ -47,7 +47,7 @@ class CrPCData(BaseModel):
     data_requested: str
     case_purpose: str
 
-# ---------------------------- TEMPLATES ----------------------------
+# ---------------------------- TEMPLATE ----------------------------
 TEMPLATE_HTML = """
 <!DOCTYPE html>
 <html>
