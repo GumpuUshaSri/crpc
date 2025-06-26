@@ -10,6 +10,6 @@ services:
       - key: EMAIL_PASSWORD
         value: zaahhzomaagtsqmp
       - key: MONGO_URI
-        value: mongodb+srv://<username>:<password>@cluster0.mongodb.net/?retryWrites=true&w=majority
+        value: mongodb+srv://crpcuser:crp12345@cluster123.itabmn6.mongodb.net/?retryWrites=true&w=majority&appName=Cluster123
       - key: CRPC_API_URL
         value: https://crpc-fastapi.onrender.com/generate
