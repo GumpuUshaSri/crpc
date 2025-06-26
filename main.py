@@ -12,7 +12,7 @@ import imaplib
 import email
 from email.header import decode_header
 
-# Load .env
+# Load environment variables
 load_dotenv()
 EMAIL_ADDRESS = os.getenv("EMAIL_ADDRESS")
 EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
@@ -74,6 +74,10 @@ TEMPLATE_HTML = """
 """
 
 # ---------------------------- ENDPOINTS ----------------------------
+
+@app.get("/")
+def root():
+    return {"message": "🚀 CrPC FastAPI server is running."}
 
 @app.post("/upload")
 async def upload_csv(file: UploadFile = File(...)):
@@ -163,7 +167,8 @@ def check_replies():
                     {"$set": {
                         "status": "responded",
                         "responded_at": datetime.utcnow(),
-                        "reply_content": body.strip()[:1000]
+                        "reply_content": body.strip()[:1000],
+                        "responded": True
                     }}
                 )
                 found += 1
@@ -181,7 +186,6 @@ def escalate_and_send():
 
     count = 0
     for user in to_escalate:
-        # Fill template
         html = Template(TEMPLATE_HTML).render(
             officer_name="Inspector General",
             designation="Cyber Cell",
@@ -189,7 +193,6 @@ def escalate_and_send():
             contact_info="cybercell@hyderabadpolice.gov.in",
             case_number=f"CASE-{uuid.uuid4().hex[:8].upper()}",
             recipient=user.get("username", "User"),
-            recipient_email=user.get("email", ""),
             suspect_identifier=user.get("username", ""),
             date_range="Last 30 days",
             data_requested=f"All messages related to: {user.get('text','')}",
@@ -246,7 +249,7 @@ def download_file(filename: str):
 def list_files():
     return {"files": os.listdir("outputs") if os.path.exists("outputs") else []}
 
-# ---------------------------- UTIL ----------------------------
+# ---------------------------- UTILITY ----------------------------
 
 def send_email(to_address, subject, body, attachment_path):
     msg = EmailMessage()
