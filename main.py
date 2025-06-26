@@ -1,4 +1,4 @@
-from fastapi import FastAPI, File, UploadFile, HTTPException
+from fastapi import FastAPI, File, UploadFile, HTTPException, Request
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from jinja2 import Template
@@ -75,8 +75,8 @@ TEMPLATE_HTML = """
 
 # ---------------------------- ENDPOINTS ----------------------------
 
-@app.get("/")
-def root():
+@app.api_route("/", methods=["GET", "HEAD"])
+def root(request: Request):
     return {"message": "🚀 CrPC FastAPI server is running."}
 
 @app.post("/upload")
