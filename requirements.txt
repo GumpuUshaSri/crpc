@@ -6,3 +6,4 @@ python-dotenv
 pydantic
 email-validator
 pymongo
+python-multipart
